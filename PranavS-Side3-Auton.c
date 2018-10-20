@@ -137,7 +137,7 @@ task main()
 {
 		puncherAuton();
 		straightPID(100);
-		straightPID(-100);
+		straightPID(-150);
 
 
 

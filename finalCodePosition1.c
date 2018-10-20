@@ -96,18 +96,18 @@ task backwardPid() {
 
 void pre_auton()
 {
-  // Set bStopTasksBetweenModes to false if you want to keep user created tasks
-  // running between Autonomous and Driver controlled modes. You will need to
-  // manage all user created tasks if set to false.
-  bStopTasksBetweenModes = true;
+	// Set bStopTasksBetweenModes to false if you want to keep user created tasks
+	// running between Autonomous and Driver controlled modes. You will need to
+	// manage all user created tasks if set to false.
+	bStopTasksBetweenModes = true;
 
 	// Set bDisplayCompetitionStatusOnLcd to false if you don't want the LCD
 	// used by the competition include file, for example, you might want
 	// to display your team name on the LCD in this function.
 	// bDisplayCompetitionStatusOnLcd = false;
 
-  // All activities that occur before the competition starts
-  // Example: clearing encoders, setting servo positions, ...
+	// All activities that occur before the competition starts
+	// Example: clearing encoders, setting servo positions, ...
 }
 
 /*---------------------------------------------------------------------------*/
@@ -122,12 +122,12 @@ void pre_auton()
 
 task autonomous()
 {
-  // ..........................................................................
-  // Insert user code here.
-  // ..........................................................................
+	// ..........................................................................
+	// Insert user code here.
+	// ..........................................................................
 
-  // Remove this function call once you have "real" code.
-  AutonomousCodePlaceholderForTesting();
+	// Remove this function call once you have "real" code.
+	AutonomousCodePlaceholderForTesting();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -142,17 +142,17 @@ task autonomous()
 
 task usercontrol()
 {
-  // User control code here, inside the loop
+	// User control code here, inside the loop
 
-  int doneValue = 1;
+	int doneValue = 1;
 	bool done = false;
 	while(true) {
-		if(doneValue==-1) {
-		motor[port8]=-(doneValue*vexRT[Ch2]);
-		motor[port9] = doneValue*vexRT[Ch2];
-		motor[port2] = -doneValue*vexRT[Ch3];
-		motor[port3] = -doneValue*vexRT[Ch3];
-	}
+		if(doneValue== -1) {
+			motor[port8]=-(doneValue*vexRT[Ch2]);
+			motor[port9] = doneValue*vexRT[Ch2];
+			motor[port2] = -doneValue*vexRT[Ch3];
+			motor[port3] = -doneValue*vexRT[Ch3];
+		}
 		else {
 			motor[port8]=-(doneValue*vexRT[Ch3]);
 			motor[port9] = doneValue*vexRT[Ch3];
@@ -160,11 +160,11 @@ task usercontrol()
 			motor[port3] = -doneValue*vexRT[Ch2];
 		}
 
-		if(vexRT[Btn5D] ==1)
+		if(vexRT[Btn5D] == 1)
 			doneValue = 0-doneValue;
 		motor[port6] = (vexRT[Btn6D]-0)*127-(vexRT[Btn6U]-0)*127;
 		motor[port7] = vexRT[Btn8U]*127 - vexRT[Btn8D]*127;
 		motor[port4] = vexRT[Btn7L]*30-vexRT[Btn7R]*30;
-			}
+	}
 
-  }
+}
