@@ -70,24 +70,25 @@ task main()
 	int doneValue = 1;
 	bool done = false;
 	while(true) {
-		if(doneValue==-1) {
-		motor[port8]= -(doneValue*vexRt[Ch2]);
-		motor[port9] = doneValue*vexRt[Ch2];
-		motor[port2] = doneValue*vexRt[Ch3];
-		motor[port3] = doneValue*vexRt[Ch3];
-	}
-		else {
-			motor[port8]= -(doneValue*vexRt[Ch2]);
-			motor[port9] = doneValue*vexRt[Ch2];
-			motor[port2] = doneValue*vexRt[Ch3];
-			motor[port3] = doneValue*vexRt[Ch3];
+		/*if(doneValue== -1) {
+			motor[port8]=	(doneValue*vexRT[Ch3]);
+			motor[port9] = -doneValue*vexRT[Ch3];
+			motor[port2] = -doneValue*vexRT[Ch2];
+			motor[port3] = -doneValue*vexRT[Ch2];
 		}
+		else {*/
+			motor[port8]= -(doneValue*vexRT[Ch2]);
+			motor[port9] = doneValue*vexRT[Ch2];
+			motor[port2] = doneValue*vexRT[Ch3];
+			motor[port3] = doneValue*vexRT[Ch3];
+	//	}
 
-		if(vexRT[Btn5D] ==1)
+		if(vexRT[Btn5D] == 1)
 			doneValue = 0-doneValue;
-		motor[port6] = (vexRt[Btn6D]-0)*127-(vexRt[Btn6U]-0)*127;
+		motor[port6] = -(-vexRT[Btn6D]-0)*127-(vexRT[Btn6U]-0)*127;
 		motor[port7] = vexRT[Btn8U]*127 - vexRT[Btn8D]*127;
 		motor[port4] = vexRT[Btn7L]*30-vexRT[Btn7R]*30;
+	}
 			//motor[port6] = (vexRT[Btn8L]-0)*127;
 			//motor[port6] = (vexRT[Btn8R]-0)*-127;
 			//motor[port4] = vexRT[Btn7L]*50-vexRT[btn7R]*50;
@@ -109,4 +110,4 @@ task main()
 						//startTask(backwardPid);
 			}
 
-	}
+
