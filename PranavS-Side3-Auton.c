@@ -50,11 +50,11 @@ static int PID90() {
 	int IntegralRaw = 0;
 	int error = 0;
 	int IntegralCap = 1200;
-	SensorValue[encoder] = 0;
+	SensorValue[driveEncoder] = 0;
 	float a;
 
 	while(true) {
-		error = target - SensorValue[encoder];
+		error = target - SensorValue[driveEncoder];
 		IntegralRaw += error;
 		if(IntegralRaw > IntegralCap) {
 			IntegralRaw = IntegralCap;
@@ -67,8 +67,8 @@ static int PID90() {
 		motor[port2] = a;
 		motor[port7] = a;
 		delay(25);
-		if(SensorValue[encoder] <= 465) {
-			if(SensorValue[encoder] >= 455) {
+		if(SensorValue[driveEncoder] <= 465) {
+			if(SensorValue[driveEncoder] >= 455) {
 				motor[port8] = 0;
 				motor[port2] = 0;
 		    motor[port7] = 0;
@@ -83,7 +83,7 @@ static int PID90() {
 
 task main()
 {
-
-
+	straightPID();
+	PID90();
 
 }
