@@ -1,4 +1,4 @@
-#pragma config(Sensor, in3,    flipperPot,     sensorPotentiometer)
+#pragma config(Sensor, in3,    pot,     sensorPotentiometer)
 #pragma config(Sensor, dgtl7,  driveEncoder,   sensorQuadEncoder)
 #pragma config(Sensor, dgtl9,  liftEncoder,    sensorQuadEncoder)
 #pragma config(Motor,  port2,           rightFront,    tmotorVex393_MC29, openLoop, reversed, driveRight)
@@ -31,126 +31,114 @@ static int straightPID(int target) {
 			IntegralRaw = -IntegralCap;
 		}
 		a = ((KP * error) - (KI * IntegralRaw));
-		motor[leftFront] = -a/2;
-		motor[leftBack] = -a/2;
-		motor[rightFront] = -a/2;
-		motor[rightBack] = -a/2;
+		motor[port2] = -a/2;
+		motor[port3] = -a/2;
+		motor[port8] = -a/2;
+		motor[port9] = -a/2;
 		delay(25);
 		if(SensorValue[driveEncoder] <= 465) {
 			if(SensorValue[driveEncoder] >= 455) {
-				motor[leftFront] = 0;
-				motor[leftBack] = 0;
-				motor[rightBack] = 0;
-				motor[rightBack] = 0;
-				return 0;
-			}
-		}
-	}
-}
-static int PID90(int turnTarget) {
-	//int target = 460;
-	int IntegralRaw = 0;
-	int error = 0;
-	int IntegralCap = 1200;
-	SensorValue[driveEncoder] = 0;
-	float a;
-
-	while(true) {
-		error = turnTarget - SensorValue[driveEncoder];
-		IntegralRaw += error;
-		if(IntegralRaw > IntegralCap) {
-			IntegralRaw = IntegralCap;
-		}
-		if(IntegralRaw < -1*IntegralCap) {
-			IntegralRaw = -IntegralCap;
-		}
-		a = ((KP * error) - (KI * IntegralRaw));
-		motor[port8] = -a;
-		motor[port2] = a;
-		motor[port7] = a;
-		delay(25);
-		if(SensorValue[driveEncoder] <= 465) {
-			if(SensorValue[driveEncoder] >= 455) {
-				motor[port8] = 0;
 				motor[port2] = 0;
-				motor[port7] = 0;
+				motor[port3] = 0;
+				motor[port8] = 0;
+				motor[rightBack] = 0;
 				return 0;
 			}
 		}
 	}
 }
+//static int PID90(int turn_target) {
+//	//int turn_target = 460;
+//	int IntegralRaw = 0;
+//	int error = 0;
+//	int IntegralCap = 1200;
+//	SensorValue[driveEncoder] = 0;
+//	float a;
+
+//	while(true) {
+//		error = turn_target- SensorValue[driveEncoder];
+//		IntegralRaw += error;
+//		if(IntegralRaw > IntegralCap) {
+//			IntegralRaw = IntegralCap;
+//		}
+//		if(IntegralRaw < -1*IntegralCap) {
+//			IntegralRaw = -IntegralCap;
+//		}
+//		a = ((KP * error) - (KI * IntegralRaw));
+//		motor[port8] = -a;
+//		motor[port2] = a;
+//		motor[port9] = a;
+//		delay(25);
+//		if(SensorValue[driveEncoder] <= 465) {
+//			if(SensorValue[driveEncoder] >= 455) {
+//				motor[port8] = 0;
+//				motor[port2] = 0;
+//				motor[port9] = 0;
+//				return 0;
+//			}
+//		}
+//	}
+//}
 
 //PID for Lift
 
-task downLiftPID()
-{
-	int target = lift_target*-1;
-	int error = 999;
-	float integralraw = 0;
-	float proportion = 0;
-	float kp = 0.65;
-	float integral = 0;
-	float ki = 0.02;
-	SensorValue[liftEncoder] = 0;
-	while(true) {
-		error = target - SensorValue[liftEncoder];
-		proportion = kp * error;
-		ki = error / target;
-		integralraw += error;
-		integral = integralraw * ki;
-		motor[liftRight] = (int)(proportion + integral);
-		motor[liftLeft] = (int)(proportion + integral);
-		delay(50);
-	}
-}
+//task downLiftPID()
+//{
+//	int target = lift_target*-1;
+//	int error = 999;
+//	float integralraw = 0;
+//	float proportion = 0;
+//	float kp = 0.65;
+//	float integral = 0;
+//	float ki = 0.02;
+//	SensorValue[liftEncoder] = 0;
+//	while(true) {
+//		error = target - SensorValue[liftEncoder];
+//		proportion = kp * error;
+//		ki = error / target;
+//		integralraw += error;
+//		integral = integralraw * ki;
+//		motor[liftRight] = (int)(proportion + integral);
+//		motor[liftLeft] = (int)(proportion + integral);
+//		delay(50);
+//	}
+//}
 
-task LiftPID()
-{
-	int error = 999;
-	float integralraw = 0;
-	float proportion = 0;
-	float kp = 0.65;
-	float integral = 0;
-	float ki = 0.02;
-	SensorValue[liftEncoder] = 0;
-	while(true) {
-		error = lift_target - SensorValue[liftEncoder];
-		proportion = kp * error;
-		ki = error / lift_target;
-		integralraw += error;
-		integral = integralraw * ki;
-		motor[liftRight] = (int)(proportion + integral);
-		motor[liftLeft] = (int)(proportion + integral);
-		delay(50);
-	}
-}
+//task LiftPID()
+//{
+//	int error = 999;
+//	float integralraw = 0;
+//	float proportion = 0;
+//	float kp = 0.65;
+//	float integral = 0;
+//	float ki = 0.02;
+//	SensorValue[liftEncoder] = 0;
+//	while(true) {
+//		error = lift_target - SensorValue[liftEncoder];
+//		proportion = kp * error;
+//		ki = error / lift_target;
+//		integralraw += error;
+//		integral = integralraw * ki;
+//		motor[liftRight] = (int)(proportion + integral);
+//		motor[liftLeft] = (int)(proportion + integral);
+//		delay(50);
+//	}
+//}
 
 void puncherAuton(){
-	motor[port5] = 127;
-	wait1Msec[5000];
-	motor[port5] = 0;
-
+	motor[port7] = 127;
+	wait1Msec(5000);
+	motor[port7] = 0;
 
 
 }
 
 task main()
 {
-	//straightPID(460);
-	//PID90(460);
-	//straightPID(10);
-	//startTask(LiftPID);
-	//straightPID(-10);
-	//PID90(460);
-	//straightPID(460);
-	//startTask(LiftPID);
-	if (vexRT[Btn5D]) {
 		puncherAuton();
 		straightPID(100);
 		straightPID(-100);
 
-
-	}
 
 
 
