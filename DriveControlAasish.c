@@ -85,4 +85,22 @@ task main()
 				if(vexRt[Btn5U]==1)
 					backwardPid();
 	}
+	
+	//Cleaner version of drive control
+	static void DriveControl()
+	{
+		while(true) {
+		motor[port8] = vexRT[Ch2];
+		motor[port9] = vexRT[Ch2];
+		motor[port2] = vexRT[Ch3];
+		motor[port3] = vexRT[Ch3];
+		motor[port6] = (vexRT[Btn6U] - vexRT[Btn6D]) * 127;
+		motor[port7] = (vexRT[Btn6U] - vexRT[Btn6D]) * 127;
+		motor[port5] = (vexRT[Btn8U]) * 127;
+		if(vexRT[Btn8D] == 1) {
+			Cap(); //Replace with Aashish's pid
+		}
+	}
+}
+
 }
