@@ -1,3 +1,5 @@
+int lift_target = 414;
+
 task LiftPID()
 {
 	int error = 999;
@@ -8,13 +10,14 @@ task LiftPID()
 	float ki = 0.02;
 	SensorValue[lift] = 0;
 	while(true) {
-		error = lift_target - SensorValue[lift];
+		error = lift_target - SensorValue[dgtl6];
 		proportion = kp * error;
 		ki = error / lift_target;
 		integralraw += error;
 		integral = integralraw * ki;
 		motor[port6] = (int)(proportion + integral);
-		motor[port7] = (int)(proportion + integral);
+		if(vexRT[Btn6U] == 1 || vexRT[Btn6D] == 1)
+			break;
 		delay(50);
 	}
 }

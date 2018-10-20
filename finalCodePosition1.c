@@ -17,6 +17,26 @@
 #include "Vex_Competition_Includes.c"
 //#define KP -0.01
 //#define KI 0.009
+int lift_target = 414;
+task LiftPID()
+{
+	int error = 999;
+	float integralraw = 0;
+	float proportion = 0;
+	float kp = 0.65;
+	float integral = 0;
+	float ki = 0.02;
+	SensorValue[dgtl4] = 0;
+	while(true) {
+		error = lift_target - SensorValue[dgtl4];
+		proportion = kp * error;
+		ki = error / lift_target;
+		integralraw += error;
+		integral = integralraw * ki;
+		motor[port6] = (int)(proportion + integral);
+		delay(50);
+	}
+}
 
 //task straightPID() {
 //	int target = -400;
@@ -148,12 +168,33 @@ task usercontrol()
 	int doneValue = 1;
 	bool done = false;
 	while(true) {
-		motor[port8]= -(doneValue*vexRT[Ch2]);
-		motor[port9] = doneValue*vexRT[Ch2];
-		motor[port2] = doneValue*vexRT[Ch3];
-		motor[port3] = doneValue*vexRT[Ch3];
-		motor[port6] = -(-vexRT[Btn6D]-0)*127-(vexRT[Btn6U]-0)*127;
+		/*if(doneValue== -1) {
+			motor[port8]=	(doneValue*vexRT[Ch3]);
+			motor[port9] = -doneValue*vexRT[Ch3];
+			motor[port2] = -doneValue*vexRT[Ch2];
+			motor[port3] = -doneValue*vexRT[Ch2];
+		}
+		else {*/
+			motor[port8]=  -(vexRT[Ch2]);
+			motor[port9] = vexRT[Ch2];
+			motor[port2] = vexRT[Ch3];
+			motor[port3] = vexRT[Ch3];
+	//	}
+
+		if(vexRT[Btn5D] == 1)
+			doneValue = 0-doneValue;
+		if (vexRT[Btn6U]){
+			motor[port6] = 127;
+		}
+		else if (vexRT[Btn6D]){
+			motor[port6] = -127;
+		}
+		else {
+			motor[port6] = 0;
+		}
+
 		motor[port7] = vexRT[Btn8U]*127 - vexRT[Btn8D]*127;
-		motor[port4] = vexRT[Btn7L]*30-vexRT[Btn7R]*30;
-}
+		motor[port4] = vexRT[Btn7L]*50-vexRT[Btn7R]*50;
+
+	}
 }

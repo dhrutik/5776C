@@ -64,6 +64,26 @@ task backwardPid() {
 		}
 	}
 }
+int lift_target = 414;
+task LiftPID()
+{
+	int error = 999;
+	float integralraw = 0;
+	float proportion = 0;
+	float kp = 0.65;
+	float integral = 0;
+	float ki = 0.02;
+	while(true) {
+		error = lift_target - SensorValue[dgtl4];
+		proportion = kp * error;
+		ki = error / lift_target;
+		integralraw += error;
+		integral = integralraw * ki;
+		motor[port6] = (int)(proportion + integral);
+		delay(50);
+	}
+}
+bool pressed = false;
 
 task main()
 {
@@ -77,37 +97,28 @@ task main()
 			motor[port3] = -doneValue*vexRT[Ch2];
 		}
 		else {*/
-			motor[port8]= -(doneValue*vexRT[Ch2]);
-			motor[port9] = doneValue*vexRT[Ch2];
-			motor[port2] = doneValue*vexRT[Ch3];
-			motor[port3] = doneValue*vexRT[Ch3];
+			motor[port8] = -(vexRT[Ch2]);
+			motor[port9] = vexRT[Ch2];
+			motor[port2] = vexRT[Ch3];
+			motor[port3] = vexRT[Ch3];
 	//	}
 
 		if(vexRT[Btn5D] == 1)
 			doneValue = 0-doneValue;
-		motor[port6] = -(-vexRT[Btn6D]-0)*127-(vexRT[Btn6U]-0)*127;
+
+		if (vexRT[Btn6U]){
+			motor[port5] = -127;
+		}
+		else if (vexRT[Btn6D]){
+			motor[port5] = 127;
+		}
+		else {
+			motor[port5] = 0;
+		}
+
 		motor[port7] = vexRT[Btn8U]*127 - vexRT[Btn8D]*127;
-		motor[port4] = vexRT[Btn7L]*30-vexRT[Btn7R]*30;
-	}
-			//motor[port6] = (vexRT[Btn8L]-0)*127;
-			//motor[port6] = (vexRT[Btn8R]-0)*-127;
-			//motor[port4] = vexRT[Btn7L]*50-vexRT[btn7R]*50;
-
-				/*if(vexRT[Btn7L]==1&&done=true) {
-					if(taskStateRunning(straightPID)==true)
-					motor[port4] = -25;
-				}
-
-				if(vexRT[Btn7R]==1) {
-					motor[port4] = 25;
-				}*/
-
-				//if(SensorValue[pot]>2000 && vexRt[Btn5U]==1) {
-					//startTask(straightPID);
-				//}
-				//else
-					//if(vexRt[Btn5U]==1)
-						//startTask(backwardPid);
+		motor[port4] = vexRT[Btn7L]*50-vexRT[Btn7R]*50;
+				//startTask(backwardPid);
 			}
 
-
+}
