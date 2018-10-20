@@ -6,11 +6,11 @@ Motor Configuration:
 port 2: leftMotorFront, 
 port 3: lefttMotorBack,
 
-port 6: rightMotorFront,  reversed
-port 7: rightMotorBack,   reversed
+port 6: liftMotorRight,  reversed
+port 7: liftMotorLeft
 
-port 8: rightMotorFront, 
-port 9: rightMotorBack, 
+port 8: rightMotorFront, reversed 
+port 9: rightMotorBack, reversed
 
 Sensor Configuration:
 dgt17: driveEncoder
