@@ -71,16 +71,16 @@ task main()
 	bool done = false;
 	while(true) {
 		if(doneValue==-1) {
-		motor[port8]=-(doneValue*vexRt[Ch2]);
+		motor[port8]= -(doneValue*vexRt[Ch2]);
 		motor[port9] = doneValue*vexRt[Ch2];
-		motor[port2] = -doneValue*vexRt[Ch3];
-		motor[port3] = -doneValue*vexRt[Ch3];
+		motor[port2] = doneValue*vexRt[Ch3];
+		motor[port3] = doneValue*vexRt[Ch3];
 	}
 		else {
-			motor[port8]=-(doneValue*vexRt[Ch3]);
-			motor[port9] = doneValue*vexRt[Ch3];
-			motor[port2] = -doneValue*vexRt[Ch2];
-			motor[port3] = -doneValue*vexRt[Ch2];
+			motor[port8]= -(doneValue*vexRt[Ch2]);
+			motor[port9] = doneValue*vexRt[Ch2];
+			motor[port2] = doneValue*vexRt[Ch3];
+			motor[port3] = doneValue*vexRt[Ch3];
 		}
 
 		if(vexRT[Btn5D] ==1)

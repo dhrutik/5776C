@@ -122,12 +122,19 @@ void pre_auton()
 
 task autonomous()
 {
-	// ..........................................................................
-	// Insert user code here.
-	// ..........................................................................
-
-	// Remove this function call once you have "real" code.
-	AutonomousCodePlaceholderForTesting();
+	motor[port5] = 100;
+	wait1Msec(4000);
+	motor[port5] = 0;
+	delay(25);
+	motor[port2] = -100;
+	motor[port3] = -100;
+	motor[port8] = 100;
+	motor[port9] = -100;
+	wait1Msec(2000);
+	motor[port2] = 0;
+	motor[port3] = 0;
+	motor[port8] = 0;
+	motor[port9] = 0;
 }
 
 /*---------------------------------------------------------------------------*/
