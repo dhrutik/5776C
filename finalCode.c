@@ -85,6 +85,6 @@ task usercontrol()
     // ........................................................................
 
     // Remove this function call once you have "real" code.
-    UserControlCodePlaceholderForTesting();
+
   }
 }
