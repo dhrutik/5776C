@@ -68,10 +68,10 @@ void flipR3(){
     moveDrive(unitsToR3,100);
     CapFlipper.spin(fwd,70,rpm); //R3 now blue
 }
-// void flipR4(){}
-void climbPlatform(){
-    
-}
+void flipR4(){} 
+//GOTTA FIGURE THIS OUT based on the field diagram idk how to get to R4 from R3 unless you go all the way around
+void climbPlatform(){}
+
 int main() {
  // auton
  //Precondition is ending up under the near flag
