@@ -35,6 +35,7 @@ void turnDrive(int angle){
     DriveLeftFront.rotateFor(angle,deg);
 }
 
+  int timeToFlip = 1000;
   int angToR1 = 0;
   int unitsToR1 = 0;
   int angToFlags = 0;
@@ -50,6 +51,8 @@ void flipR1(){
     turnDrive(angToR1);
     moveDrive(unitsToR1,100);
     CapFlipper.spin(fwd,70,rpm); // R1 now blue
+    task::sleep(timeToFlip);
+    CapFlipper.stop();
 }
 void flipR2(){
     turnDrive(angToFlags); //beginning of navigation to R2
@@ -57,6 +60,8 @@ void flipR2(){
     turnDrive(turn90);
     moveDrive(unitsToR2,100);
     CapFlipper.spin(fwd,70,rpm); // R2 now blue
+    task::sleep(timeToFlip);
+    CapFlipper.stop();
 }
 void flipR3(){
     //turn where + how much??
@@ -67,6 +72,8 @@ void flipR3(){
     turnDrive(turn90);
     moveDrive(unitsToR3,100);
     CapFlipper.spin(fwd,70,rpm); //R3 now blue
+    task::sleep(timeToFlip);
+    CapFlipper.stop();
 }
 void flipR4(){} 
 //GOTTA FIGURE THIS OUT based on the field diagram idk how to get to R4 from R3 unless you go all the way around
