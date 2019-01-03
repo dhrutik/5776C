@@ -1,0 +1,82 @@
+#include "robot-config.h"
+  
+/*
+-auton
+-caps (all?)
+-center platform
+Written for blue side
+Cap configuration
+B1 . . R1
+. R2 B2 .
+.  |CP| . 
+. R3 B3 . 
+. B4 R4 .
+*/
+void moveDrive(int moveUnits, int speed){
+    /*DriveRightBack.spin(fwd,speed,rpm);
+    DriveRightFront.spin(fwd,speed,rpm);
+    DriveLeftBack.spin(fwd,speed,rpm);
+    DriveLeftFront.spin(fwd,speed,rpm);*/
+    DriveRightBack.startRotateTo(moveUnits,deg,speed,rpm);
+    DriveRightFront.startRotateTo(moveUnits,deg,speed,rpm);
+    DriveLeftBack.startRotateTo(moveUnits,deg,speed,rpm);
+    DriveLeftFront.startRotateTo(moveUnits,deg,speed,rpm);
+}
+void driveOff(){
+    DriveRightBack.stop();
+    DriveRightFront.stop();
+    DriveLeftBack.stop();
+    DriveLeftFront.stop();
+}
+void turnDrive(int angle){
+    DriveRightBack.rotateFor(angle,deg);
+    DriveRightFront.rotateFor(angle,deg);
+    DriveLeftBack.rotateFor(angle,deg);
+    DriveLeftFront.rotateFor(angle,deg);
+}
+
+  int angToR1 = 0;
+  int unitsToR1 = 0;
+  int angToFlags = 0;
+  int unitsToTurn = 0;
+  int turn90 = 0; //to the left
+  int unitsToR2 = 0;
+  int unitsToRedSquare = 0;
+  int unitsAroundPlatform = 0;
+  int unitsToR3 = 0;
+
+void flipR1(){
+     // turn towards R1
+    turnDrive(angToR1);
+    moveDrive(unitsToR1,100);
+    CapFlipper.spin(fwd,70,rpm); // R1 now blue
+}
+void flipR2(){
+    turnDrive(angToFlags); //beginning of navigation to R2
+    moveDrive(unitsToTurn,100);
+    turnDrive(turn90);
+    moveDrive(unitsToR2,100);
+    CapFlipper.spin(fwd,70,rpm); // R2 now blue
+}
+void flipR3(){
+    //turn where + how much??
+    //navigating around platform to R3
+    moveDrive(unitsToRedSquare,100);
+    turnDrive(turn90);
+    moveDrive(unitsAroundPlatform,100);
+    turnDrive(turn90);
+    moveDrive(unitsToR3,100);
+    CapFlipper.spin(fwd,70,rpm); //R3 now blue
+}
+// void flipR4(){}
+void climbPlatform(){
+    
+}
+int main() {
+ // auton
+ //Precondition is ending up under the near flag
+    flipR1();
+    flipR2();
+    flipR3();
+    
+}
