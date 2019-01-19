@@ -26,7 +26,71 @@
   mtr1.move_relative(r, vr);
   mtr2.move_relative(r, vr);
  }
+ //autonomous
+void aut(){
+  pwrup.suspend();
+  pwrdwn.suspend();
+  pros::delay(25);
 
+  pwrup.resume();
+  pros::delay(4000);
+  //intake.move_velocity(-200);
+  intake.move(-120);
+  pros::delay(2000);
+  intake.move(0);
+
+
+
+  pros::delay(1);
+
+  moveticks(-1000 * rb, -100 * rb, 1000 * rb, 100 * rb);
+  pros::delay(1500);
+
+  moveticks(3000, 200, 3000, 200);
+  intake.move(-50);
+  pros::delay(2000);
+  intake.move_velocity(-200);
+  pros::delay(700);
+  intake.move_velocity(0);
+  moveticks(-400, -150, -400, -150);
+
+  pros::ADIDigitalIn limit_switch(2);
+  while(true){
+   if (limit_switch.get_value() == 0){
+     intake.move(-121);
+   }
+   else if (limit_switch.get_value() == 1) {
+     intake.move(200);
+     pros::delay(250);
+     intake.move(0);
+     //moveticks(-400, -150, -400, -150);
+     break;
+   }
+ }
+  pros::delay(1);
+
+  moveticks(-2750, -150, -2750, -150);
+  pros::delay(1500);
+
+  moveticks(1100 * rb, 100 * rb, -1100 * rb, -100 * rb);
+  pros::delay(1300);
+
+  moveticks(1600, 150, 1600, 150);
+  pros::delay(1500);
+
+  intake.move_velocity(-200);
+  pros::delay(1100);
+  intake.move(0);
+
+  moveticks(1500, 200, 1500, 120);
+  pros::delay(1000);
+  movebase(0, 0);
+  intake.move(0);
+
+  pwrup.suspend();
+  pwrdwn.resume();
+}
+//skills
  void Flag() {
 
    pwrup.suspend();
@@ -98,7 +162,7 @@
    moveticks(1800, 170, 1800, 170);
 
  }
-
+/*
  void blueAlliance() {
 
    pwrup.resume();
@@ -212,10 +276,13 @@
    pros::delay(2000);
 
  }
-
+ void auton(){}
+*/
  void no_auton() {}
 
 void autonomous() {
   rpm = 200;
+  //if running auton, uncomment aut(). If running skills, uncomment Flag()
   Flag();
+  //aut();
 }
