@@ -25,7 +25,7 @@
  pros::Motor fly1(5);
  pros::Motor fly2(9);
  pros::Motor intake(7);
- pros::Motor flipper(8);
+ pros::Motor indexer(8);
  pros::Vision vision_sensor(9);
  pros::ADIDigitalIn limit (1);
 float kp = 0.6, ki = 0.07, scale = 120;
@@ -152,6 +152,12 @@ void PID(int rpm){
        pwrdwn.suspend();
 
      }
+     if(master.get_digital(DIGITAL_L2)){
+       intake.move(200);
+     }
+     else{
+       intake.move(-200);
+     }
      if(master.get_digital(DIGITAL_Y)){
        pwrup.resume();
        rot = 120;
@@ -164,23 +170,16 @@ void PID(int rpm){
        pwrdwn.suspend();
      }
      
-     if(master.get_digital(DIGITAL_L1) == true) {
-       intake.move_velocity(-200);
-     }
-     else if(master.get_digital(DIGITAL_L2) == true) {
-       intake.move_velocity(200);
-     }
-     else {
-       intake.move_velocity(0);
-     }
+
+     
      if(master.get_digital(DIGITAL_R1) == true) {
-       flipper.move_velocity(-200);
+       indexer.move_velocity(-200);
      }
      else if(master.get_digital(DIGITAL_R2) == true) {
-       flipper.move_velocity(200);
+       indexer.move_velocity(200);
      }
      else {
-       flipper.move(0);
+       indexer.move(0);
      }
      //if(master.get_digital(DIGITAL_X) == true) {
        //pwrup.resume();
