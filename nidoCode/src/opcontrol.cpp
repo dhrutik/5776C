@@ -28,17 +28,19 @@
  pros::Motor flipper(8);
  pros::Vision vision_sensor(9);
  pros::ADIDigitalIn limit (1);
-float kp = 0.6, ki = 0.06, scale = 120;
+float kp = 0.6, ki = 0.07, scale = 120;
 float integral_raw = 0;
-float integral, proportion, error, pwr;
+float integral, proportion, error, error2, error3, pwr;
 
 
 void PID(int rpm){
     
     
     error = rpm - abs(fly1.get_actual_velocity());
-    proportion = error * kp;
-    if(integral_raw < 1000) {integral_raw += error;}
+    error2 = rpm - abs(fly2.get_actual_velocity());
+    error3 = (error + error2)/2;
+    proportion = error3 * kp;
+    if(integral_raw < 1000) {integral_raw += error3;}
     integral = integral_raw * ki;
     pwr = scale * (integral + proportion);
     fly1.move_voltage(pwr);
@@ -54,8 +56,7 @@ void PID(int rpm){
  }
 
  void power_up_flywheel(void* param) {
-   float kp, ki, kd;
-   float error;
+  
 
    while(true) {
      PID(rot);
@@ -94,7 +95,7 @@ void PID(int rpm){
     color.rgb = rgb;
     color.type = type;
   }
-
+/*
  void sensor() {
   float kp = -0.75;
   int power = 0;
@@ -114,6 +115,7 @@ void PID(int rpm){
     pros::delay(25);
   }
 }
+*/
 
  pros::Task pwrup (power_up_flywheel, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "up");
  pros::Task pwrdwn (power_down_flywheel, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "down");
@@ -132,8 +134,9 @@ void PID(int rpm){
    pwrdwn.suspend();
    fly1.move(0);
    fly2.move(0);
+   
    while(true) {
-     pros::lcd::print(0, "%d\n", fly1.get_voltage());
+     
      mtr3.move(master.get_analog(ANALOG_LEFT_Y) * scale);
      mtr4.move(master.get_analog(ANALOG_LEFT_Y) * scale);
      mtr1.move(master.get_analog(ANALOG_RIGHT_Y) * scale);
@@ -145,13 +148,19 @@ void PID(int rpm){
      }
      if(master.get_digital(DIGITAL_RIGHT)){
        pwrup.resume();
-       rot = 90;
+       rot = 75;
        pwrdwn.suspend();
 
      }
      if(master.get_digital(DIGITAL_Y)){
        pwrup.resume();
-       rot = 140;
+       rot = 120;
+       pwrdwn.suspend();
+     }
+
+     if(master.get_digital(DIGITAL_A)){
+       pwrup.resume();
+       rot = 80;
        pwrdwn.suspend();
      }
      
@@ -165,10 +174,10 @@ void PID(int rpm){
        intake.move_velocity(0);
      }
      if(master.get_digital(DIGITAL_R1) == true) {
-       flipper.move_velocity(200);
+       flipper.move_velocity(-200);
      }
      else if(master.get_digital(DIGITAL_R2) == true) {
-       flipper.move_velocity(-200);
+       flipper.move_velocity(200);
      }
      else {
        flipper.move(0);
