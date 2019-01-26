@@ -1,0 +1,5 @@
+back blue: top flag:140
+	   mid flag:90
+	   bottom flag: 
+front blue: top flag: 200
+	    mid flag: 90

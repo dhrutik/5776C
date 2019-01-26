@@ -13,19 +13,37 @@
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
-void opcontrol() {
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	pros::Motor left_mtr(1);
-	pros::Motor right_mtr(2);
-	while (true) {
-		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
-		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
-		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
-		int left = master.get_analog(ANALOG_LEFT_Y);
-		int right = master.get_analog(ANALOG_RIGHT_Y);
+float kp = 0.6, ki = 0.06, scale = 120;
+float integral_raw = 0;
+float integral, proportion, error, pwr;
 
-		left_mtr = left;
-		right_mtr = right;
-		pros::delay(20);
-	}
+
+void PID(int rpm){
+    
+    
+    error = rpm - abs(m.get_actual_velocity());
+    proportion = error * kp;
+    if(integral_raw < 1000) {integral_raw += error;}
+    integral = integral_raw * ki;
+    pwr = scale * (integral + proportion);
+    m.move_voltage(pwr);
+    m2.move_voltage(pwr*-1);
+      
 }
+void opcontrol() {
+    while (true){
+        if (master.get_digital(DIGITAL_A)) {
+            rollers.move(-200);
+    }
+        else {
+            rollers.move(0);
+    }
+        if (master.get_digital(DIGITAL_B)) {
+            indexer.move(-200);
+    }
+        else {
+            indexer.move(0);
+    }
+        PID(90);
+    }
+} 

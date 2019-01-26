@@ -16,6 +16,7 @@
  */
  int rpm = 200;
  bool p = false;
+ int rot; //interchangeable rpm
  pros::Controller master(pros::E_CONTROLLER_MASTER);
  pros::Motor mtr1(1, true);
  pros::Motor mtr2(2, true);
@@ -27,7 +28,23 @@
  pros::Motor flipper(8);
  pros::Vision vision_sensor(9);
  pros::ADIDigitalIn limit (1);
+float kp = 0.6, ki = 0.06, scale = 120;
+float integral_raw = 0;
+float integral, proportion, error, pwr;
 
+
+void PID(int rpm){
+    
+    
+    error = rpm - abs(fly1.get_actual_velocity());
+    proportion = error * kp;
+    if(integral_raw < 1000) {integral_raw += error;}
+    integral = integral_raw * ki;
+    pwr = scale * (integral + proportion);
+    fly1.move_voltage(pwr);
+    fly2.move_voltage(pwr*-1);
+      
+}
  void power_down_flywheel(void* param) {
    while(true) {
     fly1.move(0);
@@ -41,11 +58,11 @@
    float error;
 
    while(true) {
-     fly1.move_velocity(rpm);
-     fly2.move_velocity(-rpm);
+     PID(rot);
      pros::delay(20);
    }
  }
+
 
  void drive(int l, int r) {
    mtr3.move(l);
@@ -116,10 +133,28 @@
    fly1.move(0);
    fly2.move(0);
    while(true) {
+     pros::lcd::print(0, "%d\n", fly1.get_voltage());
      mtr3.move(master.get_analog(ANALOG_LEFT_Y) * scale);
      mtr4.move(master.get_analog(ANALOG_LEFT_Y) * scale);
      mtr1.move(master.get_analog(ANALOG_RIGHT_Y) * scale);
      mtr2.move(master.get_analog(ANALOG_RIGHT_Y) * scale);
+     if(master.get_digital(DIGITAL_LEFT)){
+       pwrup.resume();
+       rot = 200;
+       pwrdwn.suspend();
+     }
+     if(master.get_digital(DIGITAL_RIGHT)){
+       pwrup.resume();
+       rot = 90;
+       pwrdwn.suspend();
+
+     }
+     if(master.get_digital(DIGITAL_Y)){
+       pwrup.resume();
+       rot = 140;
+       pwrdwn.suspend();
+     }
+     
      if(master.get_digital(DIGITAL_L1) == true) {
        intake.move_velocity(-200);
      }
@@ -138,10 +173,10 @@
      else {
        flipper.move(0);
      }
-     if(master.get_digital(DIGITAL_X) == true) {
-       pwrup.resume();
-       pwrdwn.suspend();
-     }
+     //if(master.get_digital(DIGITAL_X) == true) {
+       //pwrup.resume();
+       //pwrdwn.suspend();
+     //}
      if(master.get_digital(DIGITAL_B) == true) {
        pwrup.suspend();
        pwrdwn.resume();
@@ -150,7 +185,10 @@
    }
  }
 
+
+
 void opcontrol() {
+  
   DriveControl();
 
 
