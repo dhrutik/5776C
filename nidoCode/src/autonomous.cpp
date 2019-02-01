@@ -273,11 +273,12 @@ void Flag2(){
    pwrdwn.suspend();
    pwrup.resume();
    roller.move(-200);
-   moveticks(3000, 200, 3000, 200);
+   moveticks(3000, 150, 3000, 150);
    pros::delay(2000);
-   moveticks(-2500, -200, -2500, -200);
-   indexer.move(-200);
+   indexer.move(-100);
    pros::delay(500);
+   moveticks(-2500, -150, -2500, -150);
+   pros::delay(1000);
    rot = 100;
    indexer.move(0);
    moveticks(-550 * rb, -150 * rb, 550 * rb, 150*rb);
