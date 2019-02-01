@@ -14,6 +14,7 @@
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
+ int roll = 1;
  int rpm = 200;
  bool p = false;
  int rot; //interchangeable rpm
@@ -24,7 +25,7 @@
  pros::Motor mtr4(4);
  pros::Motor fly1(5);
  pros::Motor fly2(9);
- pros::Motor intake(7);
+ pros::Motor roller(7);
  pros::Motor indexer(8);
  pros::Vision vision_sensor(9);
  pros::ADIDigitalIn limit (1);
@@ -55,6 +56,19 @@ void PID(int rpm){
    }
  }
 
+ void power_up_roller(void*param){
+   while(true){
+     roller.move(200);
+   }
+ }
+ void power_other_roller(void*param){
+   while(true){
+     roller.move(-200);
+   }
+ }
+ pros::Task roller_in (power_up_roller, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "left");
+ pros::Task roller_out (power_other_roller, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "right");
+
  void power_up_flywheel(void* param) {
   
 
@@ -65,36 +79,6 @@ void PID(int rpm){
  }
 
 
- void drive(int l, int r) {
-   mtr3.move(l);
-   mtr4.move(l);
-   mtr1.move(r);
-   mtr2.move(r);
- }
-
- void config_color
- (pros::vision_signature &color,
-  uint8_t id,
-  int32_t u_min,
-  int32_t u_max,
-  int32_t u_mean,
-  int32_t v_min,
-  int32_t v_max,
-  int32_t v_mean,
-  float range,
-  uint32_t type,
-  uint32_t rgb) {
-    color.id = id;
-    color.range = range;
-    color.u_min = u_min;
-    color.u_max = u_max;
-    color.u_mean = u_mean;
-    color.v_min = v_min;
-    color.v_max = v_max;
-    color.v_mean = v_mean;
-    color.rgb = rgb;
-    color.type = type;
-  }
 /*
  void sensor() {
   float kp = -0.75;
@@ -110,7 +94,7 @@ void PID(int rpm){
     if(flag.signature == 255) break;
     error = 100 - flag.y_middle_coord;
     power = (error * kp);
-    intake.move(power);
+    roller.move(power);
     if(master.get_digital(DIGITAL_Y) == true) break;
     pros::delay(25);
   }
@@ -119,7 +103,23 @@ void PID(int rpm){
 
  pros::Task pwrup (power_up_flywheel, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "up");
  pros::Task pwrdwn (power_down_flywheel, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "down");
-
+void macro(){
+  pwrup.suspend();
+  pwrdwn.suspend();
+  rot = 100;
+  pwrup.resume();
+  pros::delay(5000);
+  indexer.move(-200);
+  pros::delay(1000);
+  indexer.move(0);
+  rot = 90;
+  pros::delay(5000);
+  indexer.move(-200);
+  pros::delay(1000);
+  indexer.move(0);
+  pwrup.suspend();
+  pwrdwn.resume();
+}
  void DriveControl() {
    float scale = 1;
    fly1.move(0);
@@ -134,9 +134,10 @@ void PID(int rpm){
    pwrdwn.suspend();
    fly1.move(0);
    fly2.move(0);
-   
+   int macrotoggle = 1; 
    while(true) {
-     
+     roller_in.suspend();
+     roller_out.suspend();
      mtr3.move(master.get_analog(ANALOG_LEFT_Y) * scale);
      mtr4.move(master.get_analog(ANALOG_LEFT_Y) * scale);
      mtr1.move(master.get_analog(ANALOG_RIGHT_Y) * scale);
@@ -148,15 +149,17 @@ void PID(int rpm){
      }
      if(master.get_digital(DIGITAL_RIGHT)){
        pwrup.resume();
-       rot = 75;
+       rot = 65;
        pwrdwn.suspend();
 
      }
      if(master.get_digital(DIGITAL_L2)){
-       intake.move(200);
+       roller.move(200);
+       
      }
      else{
-       intake.move(-200);
+       roller.move(-200);
+       
      }
      if(master.get_digital(DIGITAL_Y)){
        pwrup.resume();
@@ -170,6 +173,16 @@ void PID(int rpm){
        pwrdwn.suspend();
      }
      
+     bool shift = false;
+
+    if(master.get_digital(DIGITAL_X)) {
+      if(!shift)
+      {
+         macro();
+      }
+      shift = true;
+    }
+    else {shift = false;}
 
      
      if(master.get_digital(DIGITAL_R1) == true) {

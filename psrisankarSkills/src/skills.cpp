@@ -82,7 +82,4 @@ void skills() {
 
    moveticks(900,150,-900,-150);
    pros::delay(900);
-
-   movebase(120,120);
-   pros::delay(3000);
  }

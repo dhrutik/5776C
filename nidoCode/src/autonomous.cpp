@@ -26,7 +26,49 @@
   mtr1.move_relative(r, vr);
   mtr2.move_relative(r, vr);
  }
+void Flag2(){
+   rot = 65;
+   pwrup.suspend();
+   pwrdwn.suspend();
+   roller_in.suspend();
 
+
+   pwrup.resume();
+   roller_in.resume();
+   
+
+   moveticks(3100, 150, 3100, 150);
+   pros::delay(2500);
+   
+
+   moveticks(-2900, -150, -2900, -150);
+   pros::delay(1600);
+
+   moveticks(900 * rb, 100 * rb, -900 * rb, -100 * rb);
+   pros::delay(1300);
+   
+
+   indexer.move(-200);
+   pros::delay(500);
+   indexer.move(0);
+   pros::delay(1000);
+   rot = 200;
+
+   moveticks(750, 100, 750, 100);
+   pros::delay(1500);
+   indexer.move_velocity(-200);
+   pros::delay(1000);
+   indexer.move(0);
+
+   moveticks(2000, 200, 2000, 200);
+   pros::delay(1900);
+   movebase(0, 0);
+   indexer.move(0);
+
+   pwrup.suspend();
+   pwrdwn.resume();
+
+}
  void Flag() {
    pwrup.suspend();
    pwrdwn.suspend();
@@ -34,21 +76,21 @@
 
    pwrup.resume();
    pros::delay(2500);
-   intake.move_velocity(-200);
+   indexer.move_velocity(-200);
    pros::delay(1000);
-   intake.move(0);
+   indexer.move(0);
    pros::delay(1);
 
    moveticks(-880 * rb, -100 * rb, 880 * rb, 100 * rb);
    pros::delay(1500);
 
    moveticks(3000, 150, 3000, 150);
-   intake.move(-50);
+   indexer.move(-50);
    pros::delay(2000);
 
-   intake.move_velocity(-170);
+   indexer.move_velocity(-170);
    pros::delay(500);
-   intake.move_velocity(0);
+   indexer.move_velocity(0);
    pros::delay(1);
 
    moveticks(-2900, -150, -2900, -150);
@@ -60,14 +102,14 @@
    moveticks(1700, 150, 1700, 150);
    pros::delay(1600);
 
-   intake.move_velocity(-200);
+   indexer.move_velocity(-200);
    pros::delay(1000);
-   intake.move(0);
+   indexer.move(0);
 
-   moveticks(2000, 200, 2000, 100);
+   moveticks(2000, 200, 2000, 200);
    pros::delay(1900);
    movebase(0, 0);
-   intake.move(0);
+   indexer.move(0);
 
    pwrup.suspend();
    pwrdwn.resume();
@@ -77,7 +119,7 @@
 
    pwrup.resume();
    pros::delay(4000);
-   intake.move(-120);
+   indexer.move(-120);
    pros::delay(2000);
    pwrup.suspend();
    pwrdwn.resume();
@@ -102,21 +144,21 @@
 
    pwrup.resume();
    pros::delay(4000);
-   intake.move_velocity(-200);
+   indexer.move_velocity(-200);
    pros::delay(1000);
-   intake.move(0);
+   indexer.move(0);
    pros::delay(1);
 
    moveticks(-880 * rb, -100 * rb, 880 * rb, 100 * rb);
    pros::delay(1500);
 
    moveticks(3000, 150, 3000, 150);
-   intake.move(-50);
+   indexer.move(-50);
    pros::delay(2000);
 
-   intake.move_velocity(-170);
+   indexer.move_velocity(-170);
    pros::delay(700);
-   intake.move_velocity(0);
+   indexer.move_velocity(0);
    pros::delay(1);
 
    moveticks(-2900, -150, -2900, -150);
@@ -128,9 +170,9 @@
    moveticks(1600, 150, 1600, 150);
    pros::delay(1500);
 
-   intake.move_velocity(-200);
+   indexer.move_velocity(-200);
    pros::delay(1100);
-   intake.move(0);
+   indexer.move(0);
 
    moveticks(1000 * rb, 100 * rb, -1000 * rb, -100 * rb);
    pros::delay(1300);
@@ -138,13 +180,13 @@
    moveticks(500, 100, 500, 100);
    pros::delay(700);
 
-   flipper.move(-100);
+   roller.move(-100);
    pros::delay(500);
 
    moveticks(-800, -100, -800, -100);
    pros::delay(800);
 
-   flipper.move(127);
+   roller.move(127);
    pros::delay(1000);
 
    moveticks(0, 0, 800, 100);
@@ -163,7 +205,7 @@
    pros::delay(1200);
 
    moveticks(3000, 150, 3000, 150);
-   intake.move(127);
+   indexer.move(127);
    pros::delay(2000);
 
    moveticks(-3000, -150, -3000, -150);
@@ -182,7 +224,7 @@
    pros::delay(1300);
 
    moveticks(3000, 150, 3000, 150);
-   intake.move(127);
+   indexer.move(127);
    pros::delay(2000);
 
  }
@@ -200,13 +242,13 @@
    pros::delay(3000);
  }
  void backAuton2(){
-   //move forward with intakes rolling
+   //move forward with indexers rolling
    moveticks(3000, 200, 3000, 200);
-   intake.move(-50);
+   indexer.move(-50);
    pros::delay(2000);
-   intake.move_velocity(-200);
+   indexer.move_velocity(-200);
    pros::delay(700);
-   intake.move_velocity(0);
+   indexer.move_velocity(0);
 
    moveticks(-300, -200, -300, -200);
    pros::delay(1000);
@@ -221,10 +263,46 @@
 
 
  }
- void no_auton() {}
 
+ void backAuton3(){
+   roll = 1;
+
+   roller_in.suspend();
+   roller_out.suspend();
+   pwrup.suspend();
+   pwrdwn.suspend();
+   pwrup.resume();
+   roller.move(-200);
+   moveticks(3000, 200, 3000, 200);
+   pros::delay(2000);
+   moveticks(-2500, -200, -2500, -200);
+   indexer.move(-200);
+   pros::delay(500);
+   rot = 100;
+   indexer.move(0);
+   moveticks(-550 * rb, -150 * rb, 550 * rb, 150*rb);
+   pros::delay(1000);
+   roller.move(0);
+  
+
+   
+   //roller_out.resume();
+   moveticks(1000, 100, 1000, 100);
+   roller.move(200);
+   pros::delay(1000);
+   roller.move(0);
+   moveticks(-3000, -150, -3000, -150);
+   pros::delay(1500);
+   moveticks(200*rb, 150*rb, -200*rb, -150*rb);
+   pros::delay(500);
+   moveticks(2000, 200, 2000, 2000);
+
+   
+
+
+ }
 void autonomous() {
   rpm = 200;
 
-  Flag();
+  backAuton3();
 }
