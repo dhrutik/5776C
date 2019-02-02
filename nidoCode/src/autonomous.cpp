@@ -227,6 +227,57 @@ void Flag2(){
    indexer.move(127);
    pros::delay(2000);
 
+
+
+
+   //back auton
+   roll = 1;
+
+   roller_in.suspend();
+   roller_out.suspend();
+   pwrup.suspend();
+   pwrdwn.suspend();
+   pwrup.resume();
+   roller.move(-200);
+   moveticks(1500, 200, 1500, 200);
+   pros::delay(500);
+   moveticks(1500, 150, 1500, 150);
+   pros::delay(2000);
+   moveticks(-2000, -150, -2000, -150);
+   indexer.move(-200);
+   pros::delay(800);
+   indexer.move(0);
+   
+   moveticks(-380 * rb, -150 * rb, 380 * rb, 150*rb);
+   pros::delay(1000);
+   roller.move(0);
+  
+
+   
+   //roller_out.resume();
+   moveticks(2000, 150, 2000, 150);
+   pros::delay(500);
+   roller.move(200);
+   moveticks(1700, 100, 1700, 100);
+   pros::delay(1100);
+   roller.move(0);
+   moveticks(-900, -150, -900, -150);
+   indexer.move(200);
+   pros::delay(200);
+   
+   indexer.move(0);
+   pros::delay(1500);
+   
+   moveticks(420*rb, 150*rb, -420*rb, -150*rb);
+   pros::delay(500);
+   moveticks(680*rb, 150*rb, -680*rb, -150*rb);
+   pros::delay(1100);
+   moveticks(6200, 200, 6200, 200);
+   rot = 100;
+   pros::delay(1800);
+   moveticks(-70*rb, -150*rb, 70*rb, 150*rb);
+   pros::delay(500);
+
  }
  void backAuton(){
 
@@ -273,34 +324,60 @@ void Flag2(){
    pwrdwn.suspend();
    pwrup.resume();
    roller.move(-200);
-   moveticks(3000, 200, 3000, 200);
-   pros::delay(2000);
-   moveticks(-2500, -200, -2500, -200);
-   indexer.move(-200);
+   moveticks(1500, 200, 1500, 200);
    pros::delay(500);
-   rot = 100;
+   moveticks(1700, 150, 1700, 150);
+   pros::delay(2000);
+   moveticks(-2000, -150, -2000, -150);
+   indexer.move(-200);
+   pros::delay(800);
    indexer.move(0);
-   moveticks(-550 * rb, -150 * rb, 550 * rb, 150*rb);
+   
+   moveticks(-380 * rb, -150 * rb, 380 * rb, 150*rb);
    pros::delay(1000);
    roller.move(0);
   
 
    
    //roller_out.resume();
-   moveticks(1000, 100, 1000, 100);
-   roller.move(200);
-   pros::delay(1000);
-   roller.move(0);
-   moveticks(-3000, -150, -3000, -150);
-   pros::delay(1500);
-   moveticks(200*rb, 150*rb, -200*rb, -150*rb);
+   moveticks(2000, 150, 2000, 150);
    pros::delay(500);
-   moveticks(2000, 200, 2000, 2000);
-
+   roller.move(200);
+   moveticks(1700, 100, 1700, 100);
+   pros::delay(1100);
+   roller.move(0);
+   indexer.move(-200);
+   pros::delay(800);
+   indexer.move(0);
+   moveticks(-900, -150, -900, -150);
+   indexer.move(200);
+   pros::delay(200);
+   
+   indexer.move(0);
+   pros::delay(1500);
+   
+   moveticks(420*rb, 150*rb, -420*rb, -150*rb);
+   pros::delay(500);
+   moveticks(680*rb, 150*rb, -680*rb, -150*rb);
+   pros::delay(1100);
+   moveticks(6200, 200, 6200, 200);
+   rot = 100;
+   pros::delay(1800);
+   moveticks(-70*rb, -150*rb, 70*rb, 150*rb);
+   pros::delay(500);
+   indexer.move(-200);
+   pros::delay(1000);
+   indexer.move(0);
+   
    
 
 
  }
+
+void turning(){
+  
+  pros::delay(100);
+}
 void autonomous() {
   rpm = 200;
 
