@@ -317,7 +317,7 @@ void Flag2(){
 
  void backAuton3(){
    roll = 1;
-
+   rot = 0;
    roller_in.suspend();
    roller_out.suspend();
    pwrup.suspend();
@@ -343,24 +343,29 @@ void Flag2(){
    moveticks(2000, 150, 2000, 150);
    pros::delay(500);
    roller.move(200);
-   moveticks(1700, 100, 1700, 100);
+   moveticks(1800, 100, 1800, 100);
    pros::delay(1100);
    roller.move(0);
    indexer.move(-200);
    pros::delay(800);
    indexer.move(0);
-   moveticks(-900, -150, -900, -150);
+   moveticks(-1430, -150, -1430, -150);
+   pros::delay(1000);
    indexer.move(200);
    pros::delay(200);
    
    indexer.move(0);
    pros::delay(1500);
    
-   moveticks(420*rb, 150*rb, -420*rb, -150*rb);
+   moveticks(450*rb, 150*rb, -450*rb, -150*rb);
    pros::delay(500);
    moveticks(680*rb, 150*rb, -680*rb, -150*rb);
    pros::delay(1100);
-   moveticks(6200, 200, 6200, 200);
+   moveticks(5800, 200, 5800, 200);
+   pwrup.suspend();
+   pwrdwn.resume();
+   pwrdwn.suspend();
+   pwrup.resume();
    rot = 100;
    pros::delay(1800);
    moveticks(-70*rb, -150*rb, 70*rb, 150*rb);
