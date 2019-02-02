@@ -349,7 +349,7 @@ void Flag2(){
    indexer.move(-200);
    pros::delay(800);
    indexer.move(0);
-   moveticks(-1430, -150, -1430, -150);
+   moveticks(-1480, -150, -1480, -150);
    pros::delay(1000);
    indexer.move(200);
    pros::delay(200);
